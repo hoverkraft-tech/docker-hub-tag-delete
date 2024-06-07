@@ -1,4 +1,5 @@
 # Python virtual environment
-env
+.venv
 # Local development environment variables
 .env.local
+.envrc

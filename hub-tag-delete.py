@@ -17,7 +17,7 @@ on wildcards: https://docs.python.org/3/library/fnmatch.html
 Configuration is set using environment variables.
 
 * Refer to the README.md file in this project's root directory for usage
-  information.
+    information.
 
 * Refer to the LICENSE file in this project's root for license information.
 
@@ -31,6 +31,7 @@ Todo:
 import os
 import json
 import fnmatch
+import pprint as pp
 from datetime import datetime
 
 import requests
@@ -80,7 +81,7 @@ def line_is_ignored(line):
 
 def get_readme_table():
     """Return rows from a Markdown table that list tag patterns and deletion
-       dates
+        dates
     """
     md_file = open(config['markdown']['file'], 'r').readlines()
     parsing = False
@@ -155,7 +156,8 @@ def tags_to_delete():
                 t = tags_matching_pattern(pattern)
                 tags_list.append(t)
     # Flatten list
-    tags_list = [i for row in tags_list for i in row]
+    if len(tags_list) > 0:
+        tags_list = [i for row in tags_list for i in row]
     return tags_list
 
 
@@ -173,8 +175,10 @@ def delete_expired_tags():
                 + '/repositories/' + config['docker_hub']['repository'] \
                 + '/tags/' + tag
 
-        resp = session.delete(config['docker_hub']['api_base_url'] + url,
-                              headers=headers)
+        resp = session.delete(
+            config['docker_hub']['api_base_url'] + url,
+            headers=headers
+        )
         resp.raise_for_status()
         deleted.append(tag)
     return deleted
@@ -196,24 +200,47 @@ def docker_hub_token():
 
 def tags_matching_pattern(pattern):
     """Compares tags on Docker Hub to our tag patterns and returns a list of
-       matching tags that are on Docker Hub
+        matching tags that are on Docker Hub
     """
     url = '/namespaces/' \
         + config['docker_hub']['organization'] \
         + '/repositories/' \
         + config['docker_hub']['repository'] + '/tags'
 
-    headers = {"Content-type": "application/json"}
+    headers = {
+        "Content-type": "application/json",
+        "Authorization": f"Bearer {docker_hub_token()}"
+    }
 
-    resp = session.get(config['docker_hub']['api_base_url'] + url,
-                       headers=headers)
+    params = {
+        'page_size': 100,
+        'ordering': 'name'
+    }
+
+    resp = session.get(
+        config['docker_hub']['api_base_url'] + url,
+        headers=headers,
+        params=params
+    )
     _next = None
     matching_tags = []
     # Loop through pagination
     while True:
         if _next:
             resp = session.get(_next, headers=headers)
-            resp.raise_for_status()
+            try:
+                resp.raise_for_status()
+                # pp.pprint(resp.json())
+            except requests.exceptions.HTTPError as e:
+                if e.response.status_code == 404:
+                    # Handle the 404 error here
+                    # You can choose to log the error or perform any other action
+                    # print(f"Request details:\nURL: {resp.url}\nMethod: {resp.request.method}\nHeaders: {resp.request.headers}\nBody: {resp.request.body}\n")
+                    # print(f"Response details:\nStatus Code: {resp.status_code}\nHeaders: {resp.headers}\nContent: {resp.content}\n")
+                    break
+                else:
+                    # Handle other HTTP errors
+                    raise
 
         resp = resp.json()
         for i in resp['results']:
