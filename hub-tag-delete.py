@@ -31,7 +31,6 @@ Todo:
 import os
 import json
 import fnmatch
-import pprint as pp
 from datetime import datetime
 
 import requests
@@ -230,17 +229,11 @@ def tags_matching_pattern(pattern):
             resp = session.get(_next, headers=headers)
             try:
                 resp.raise_for_status()
-                # pp.pprint(resp.json())
             except requests.exceptions.HTTPError as e:
                 if e.response.status_code == 404:
                     # Handle the 404 error here
-                    # You can choose to log the error or perform any other action
-                    # print(f"Request details:\nURL: {resp.url}\nMethod: {resp.request.method}\nHeaders: {resp.request.headers}\nBody: {resp.request.body}\n")
-                    # print(f"Response details:\nStatus Code: {resp.status_code}\nHeaders: {resp.headers}\nContent: {resp.content}\n")
                     break
-                else:
-                    # Handle other HTTP errors
-                    raise
+                raise
 
         resp = resp.json()
         for i in resp['results']:
