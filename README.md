@@ -1,15 +1,8 @@
 # Docker Hub Image Tag Deleter
 
-[![Tests](https://github.com/joshbeard/docker-hub-tag-delete/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/joshbeard/docker-hub-tag-delete/actions/workflows/tests.yml)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/25f78736c6fb48db96bde0f04bda7029)](https://www.codacy.com/gh/joshbeard/docker-hub-tag-delete/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=joshbeard/docker-hub-tag-delete&amp;utm_campaign=Badge_Grade)
-[![CodeFactor](https://www.codefactor.io/repository/github/joshbeard/docker-hub-tag-delete/badge)](https://www.codefactor.io/repository/github/joshbeard/docker-hub-tag-delete)
+[![Tests](https://github.com/hoverkraft-tech/docker-hub-tag-delete/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/hoverkraft-tech/docker-hub-tag-delete/actions/workflows/tests.yml)
 
-<!-- TODO: Disabled until I cleanup the tests
-[![DeepSource](https://deepsource.io/gh/joshbeard/docker-hub-tag-delete.svg/?label=active+issues&show_trend=true&token=JBOrbjcsB0m6ImmQ5Sl2MMve)](https://deepsource.io/gh/joshbeard/docker-hub-tag-delete/?ref=repository-badge)
--->
-
-Schedule and handle the deletion of image tags on the [Docker
-Hub](https://hub.docker.com).
+Schedule and handle the deletion of image tags on the [DockerHub](https://hub.docker.com).
 
 A GitHub action is also included.
 
@@ -168,7 +161,7 @@ Basic usage:
 
 ```yaml
     - name: Docker Hub Tag Deleter
-      uses: joshbeard/hub-tag-delete@v1
+      uses: hoverkraft-tech/hub-tag-delete@v1
       with:
         dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
         dockerhub_password: ${{ secrets.DOCKERHUB_PASSWORD }}
@@ -187,7 +180,7 @@ An example showing all inputs:
 
 ```yaml
     - name: Docker Hub Tag Deleter
-      uses: joshbeard/hub-tag-delete@v1
+      uses: hoverkraft-tech/hub-tag-delete@v1
       with:
         dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
         dockerhub_password: ${{ secrets.DOCKERHUB_PASSWORD }}
@@ -206,7 +199,7 @@ Refer to the `inputs` section of the [`action.yml`](action.yml) file for
 more information.
 
 See an example of using this in the
-[joshbeard/docker-ansible](https://github.com/joshbeard/docker-ansible/)
+[hoverkraft-tech/docker-ansible](https://github.com/hoverkraft-tech/docker-ansible/)
 repository.
 
 ## Developer Notes
@@ -265,7 +258,7 @@ To activate the Python virtual environment in the container:
 
 ## Branching Scheme
 
-* `master` is the default branch that changes should be pulled into.
+* `main` is the default branch that changes should be pulled into.
 * `v1` is a "stable" branch.
 * _tags_ are created by maintainer based on changes.
 
@@ -283,16 +276,9 @@ To activate the Python virtual environment in the container:
 
 ## Authors
 
-* Josh Beard, [joshbeard.me](https://joshbeard.me)
+* Forked from the initial work of Josh Beard, [joshbeard.me](https://joshbeard.me)
+* Frederic Leger
 
 ## License
 
 [BSD Zero Clause License (0BSD)](LICENSE)
-
-## Repository Integrations
-
-* [Codacy](https://app.codacy.com/gh/joshbeard/docker-hub-tag-delete/)
-* [CodeFactor](https://www.codefactor.io/repository/github/joshbeard/docker-hub-tag-delete)
-* [Deepsource](https://deepsource.io/gh/joshbeard/docker-hub-tag-delete/)
-* [Renovate](https://www.mend.io/free-developer-tools/renovate/)
-
